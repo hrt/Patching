@@ -19,14 +19,15 @@ bool Game::isValid()
   location.direction = board[spoolIndex];   // direction left === spool left..
   bool isValid = true;
 
-  if (isSpool(location.position))
+  // todo : multiple tie offs, a.k.a check that all location.positions are tieoffs
+  while (isValid && !isTieOff(location.position))
   {
     isValid &= advancePosition(location);
     isValid &= isAccepting(location);
     updateDirection(location);
   }
 
-  return false;
+  return isValid;
 }
 
 // move ahead one
