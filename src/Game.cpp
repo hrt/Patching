@@ -117,48 +117,45 @@ bool Game::isAccepting(std::vector<location_t> locations)
   return allAccepting;
 }
 
-void Game::updateDirection(location_t& location)
-{
-  piece_t piece = board[location.position];
-  int previousDirection = location.direction;
-
-  // todo: should be location array instead of one
-  if (isTurn(piece))
-  {
-    if (previousDirection % 2 == 0)  // left or right
-    {
-      if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
-      {
-        location.direction = (previousDirection + 1) % 4;
-      }
-      else // left down or right up
-      {
-        location.direction = ((previousDirection - 1) + 4) % 4;
-      }
-    }
-    else  // up or down
-    {
-      if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
-      {
-        location.direction = ((previousDirection - 1) + 4) % 4;
-      }
-      else // left down or right up
-      {
-        location.direction = (previousDirection + 1) % 4;
-      }
-    }
-  }
-  else if (isTurnStraight(piece))
-  {
-    // todo : requires earlier todo
-  }
-}
-
 
 void Game::updateDirections(std::vector<location_t> &locations)
 {
   for (int i = 0; i < (int) locations.size(); i++)
-    updateDirection(locations[i]);
+  {
+    piece_t piece = board[locations[i].position];
+    int previousDirection = locations[i].direction;
+
+    // todo: should be location array instead of one
+    if (isTurn(piece))
+    {
+      if (previousDirection % 2 == 0)  // left or right
+      {
+        if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
+        {
+          locations[i].direction = (previousDirection + 1) % 4;
+        }
+        else // left down or right up
+        {
+          locations[i].direction = ((previousDirection - 1) + 4) % 4;
+        }
+      }
+      else  // up or down
+      {
+        if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
+        {
+          locations[i].direction = ((previousDirection - 1) + 4) % 4;
+        }
+        else // left down or right up
+        {
+          locations[i].direction = (previousDirection + 1) % 4;
+        }
+      }
+    }
+    else if (isTurnStraight(piece))
+    {
+      // pushback a new location and update current!
+    }
+  }
 }
 
 bool Game::isFinished(std::vector<location_t> locations)

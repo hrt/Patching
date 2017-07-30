@@ -21,7 +21,6 @@ private:
   bool advancePositions(std::vector<location_t> &locations);
   bool isAccepting(std::vector<location_t> locations);
   bool isAccepting(location_t location);
-  void updateDirection(location_t& location);
   void updateDirections(std::vector<location_t> &locations);
   bool isFinished(std::vector<location_t> locations);
 };
