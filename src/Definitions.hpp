@@ -26,10 +26,7 @@
 #define TIE_OFF_RIGHT 6
 #define TIE_OFF_DOWN 7
 
-#define BLOCKER_LEFT 8            // !-
-#define BLOCKER_UP 9
-#define BLOCKER_RIGHT 10
-#define BLOCKER_DOWN 11
+#define BLOCKER 8
 
 #define STRAIGHT_HORIZONTAL 12    // _
 #define STRAIGHT_VERTICAL 13
@@ -52,7 +49,7 @@
 // Generic piece functions
 #define isSpool(x) (x >= SPOOL_LEFT && x <= SPOOL_DOWN)
 #define isTieOff(x) (x >= TIE_OFF_LEFT && x <= TIE_OFF_DOWN)
-#define isBlocker(x) (x >= BLOCKER_LEFT && x <= BLOCKER_DOWN)
+#define isBlocker(x) (x == BLOCKER)
 #define isStraight(x) (x == STRAIGHT_VERTICAL || x == STRAIGHT_HORIZONTAL)
 #define isTurn(x) (x >= TURN_LEFT_UP && x <= TURN_LEFT_DOWN)
 #define isTurnStraight(x) (x >= TURN_STRAIGHT_LEFT && x <= TURN_STRAIGHT_DOWN)
