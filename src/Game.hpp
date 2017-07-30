@@ -15,6 +15,8 @@ private:
   int spoolIndex;
   std::vector<int> tieOffIndex;
   bool advancePosition(location_t& location);
+  bool isAccepting(location_t location);
+  void updateDirection(location_t& location);
 };
 
 #endif

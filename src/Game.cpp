@@ -22,12 +22,14 @@ bool Game::isValid()
   if (isSpool(location.position))
   {
     isValid &= advancePosition(location);
+    isValid &= isAccepting(location);
+    updateDirection(location);
   }
 
   return false;
 }
 
-// move ahead one and check if next position is accepting
+// move ahead one
 bool Game::advancePosition(location_t& location)
 {
   // advance..
@@ -60,39 +62,48 @@ bool Game::advancePosition(location_t& location)
     default:
     return false;
   }
+  return true;
+}
 
-  // check new position is accepting..
-  piece_t nextPiece = board[location.position];
+// check if piece is accepting direction
+bool Game::isAccepting(location_t location)
+{
+  piece_t piece = board[location.position];
+  int direction = location.direction;
 
-  if (isBlocker(nextPiece))
+  if (isBlocker(piece))
   {
     return false;
   }
-  else if (isStraight(nextPiece))
+  else if (isStraight(piece))
   {
-    return location.direction % 2 == nextPiece % 2;
+    return direction % 2 == piece % 2;
   }
-  else if (isTurn(nextPiece))
+  else if (isTurn(piece))
   {
-    return nextPiece - TURN_LEFT_UP == location.direction
-        || (nextPiece - TURN_LEFT_UP + 1) % 4 == location.direction;
+    return piece - TURN_LEFT_UP == direction
+        || (piece - TURN_LEFT_UP + 1) % 4 == direction;
   }
-  else if (isTurnStraight(nextPiece))
+  else if (isTurnStraight(piece))
   {
-    return (nextPiece - TURN_STRAIGHT_LEFT + 2) % 4 != location.direction;
+    return (piece - TURN_STRAIGHT_LEFT + 2) % 4 != direction;
   }
-  else if (isGrommet(nextPiece))
+  else if (isGrommet(piece))
   {
-    return nextPiece - GROMMET_LEFT == location.direction;
+    return piece - GROMMET_LEFT == direction;
   }
-  else if (isTieOff(nextPiece))
+  else if (isTieOff(piece))
   {
-    return nextPiece - TIE_OFF_LEFT == location.direction;
+    return piece - TIE_OFF_LEFT == direction;
   }
-  else if (isSpool(nextPiece))
+  else if (isSpool(piece))
   {
-    return nextPiece - SPOOL_LEFT == location.direction;
+    return piece - SPOOL_LEFT == direction;
   }
-
   return false;
+}
+
+void Game::updateDirection(location_t& location)
+{
+
 }
