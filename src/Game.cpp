@@ -85,6 +85,14 @@ bool Game::advancePosition(location_t& location)
   {
     return nextPiece - GROMMET_LEFT == location.direction;
   }
+  else if (isTieOff(nextPiece))
+  {
+    return nextPiece - TIE_OFF_LEFT == location.direction;
+  }
+  else if (isSpool(nextPiece))
+  {
+    return nextPiece - SPOOL_LEFT == location.direction;
+  }
 
   return false;
 }
