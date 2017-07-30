@@ -22,7 +22,6 @@ bool Game::isValid()
 
   bool isValid = true;
 
-  // todo : multiple tie offs, a.k.a check that all tieoffs are met and location.position s are tie offs or grommet
   while (isValid && !isFinished(locations))
   {
     isValid &= advancePositions(locations);
@@ -153,12 +152,13 @@ void Game::updateDirections(std::vector<location_t> &locations)
     }
     else if (isTurnStraight(piece))
     {
-      // pushback a new location and update current!
+      // todo : pushback a new location and update current!
     }
   }
 }
 
 bool Game::isFinished(std::vector<location_t> locations)
 {
+  // todo : multiple tie offs, a.k.a check that all tieoffs are met and location.position s are tie offs or grommet
   return true;
 }
