@@ -14,5 +14,6 @@ Game::Game(board_t board)
 
 bool Game::isValid()
 {
+
   return false;
 }
