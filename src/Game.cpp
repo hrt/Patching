@@ -105,5 +105,37 @@ bool Game::isAccepting(location_t location)
 
 void Game::updateDirection(location_t& location)
 {
+  piece_t piece = board[location.position];
+  int previousDirection = location.direction;
 
+  // todo: should be location array instead of one
+  if (isTurn(piece))
+  {
+    if (previousDirection % 2 == 0)  // left or right
+    {
+      if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
+      {
+        location.direction = (previousDirection + 1) % 4;
+      }
+      else // left down or right up
+      {
+        location.direction = ((previousDirection - 1) + 4) % 4;
+      }
+    }
+    else  // up or down
+    {
+      if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
+      {
+        location.direction = ((previousDirection - 1) + 4) % 4;
+      }
+      else // left down or right up
+      {
+        location.direction = (previousDirection + 1) % 4;
+      }
+    }
+  }
+  else if (isTurnStraight(piece))
+  {
+    // todo : requires earlier todo
+  }
 }
