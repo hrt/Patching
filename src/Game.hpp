@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Definitions.hpp"
+#include "Location.hpp"
 
 class Game
 {
@@ -13,6 +14,7 @@ private:
   board_t board;
   int spoolIndex;
   std::vector<int> tieOffIndex;
+  bool advancePosition(location_t& location);
 };
 
 #endif

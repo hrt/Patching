@@ -6,7 +6,7 @@ OUTDIR	= bin
 
 OOBJ		= Parser.o Game.o
 
-_DEPS		= Definitions.hpp Parser.hpp Game.hpp
+_DEPS		= Definitions.hpp Parser.hpp Game.hpp Location.hpp
 DEPS    = $(patsubst %,$(SRCDIR)/%,$(_DEPS))
 
 _OBJ		= $(OOBJ) Main.o
