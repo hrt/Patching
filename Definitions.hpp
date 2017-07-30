@@ -1,6 +1,8 @@
 #ifndef DEFINITIONS_HPP
 #define DEFINITIONS_HPP
 
+#include <array>
+
 // Board dimensions
 #define BOARD_HEIGHT 6
 #define BOARD_WIDTH 7
@@ -16,6 +18,6 @@
 #define GROMMET 6
 
 // Representation of the board
-typedef int board_t[BOARD_WIDTH * BOARD_HEIGHT];
+typedef std::array<int, BOARD_WIDTH * BOARD_HEIGHT> board_t;
 
 #endif
