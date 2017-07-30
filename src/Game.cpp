@@ -16,51 +16,57 @@ bool Game::isValid()
   location_t location;
   location.position = spoolIndex;
   location.direction = board[spoolIndex];   // direction left === spool left..
+
+  std::vector<location_t> locations;
+  locations.push_back(location);
+
   bool isValid = true;
 
   // todo : multiple tie offs, a.k.a check that all tieoffs are met and location.position s are tie offs or grommet
-  while (isValid && !isTieOff(board[location.position]))
+  while (isValid && !isFinished(locations))
   {
-    isValid &= advancePosition(location);
-    isValid &= isAccepting(location);
-    updateDirection(location);
+    isValid &= advancePositions(locations);
+    isValid &= isAccepting(locations);
+    updateDirections(locations);
   }
 
   return isValid;
 }
 
 // move ahead one
-bool Game::advancePosition(location_t& location)
+bool Game::advancePositions(std::vector<location_t> &locations)
 {
-  // advance..
-  switch (location.direction)
+  for (int i = 0; i < (int) locations.size(); i++)
   {
-    case DIRECTION_LEFT:
-    if (location.position % BOARD_WIDTH == 0)                   // left edge
-      return false;
-    location.position -= 1;
-    break;
+    switch (locations[i].direction)
+    {
+      case DIRECTION_LEFT:
+      if (locations[i].position % BOARD_WIDTH == 0)                   // left edge
+        return false;
+      locations[i].position -= 1;
+      break;
 
-    case DIRECTION_UP:
-    if (location.position < BOARD_WIDTH)                        // top edge
-      return false;
-    location.position -= BOARD_WIDTH;
-    break;
+      case DIRECTION_UP:
+      if (locations[i].position < BOARD_WIDTH)                        // top edge
+        return false;
+      locations[i].position -= BOARD_WIDTH;
+      break;
 
-    case DIRECTION_RIGHT:
-    if (location.position % BOARD_WIDTH == BOARD_WIDTH - 1)     // right edge
-      return false;
-    location.position += 1;
-    break;
+      case DIRECTION_RIGHT:
+      if (locations[i].position % BOARD_WIDTH == BOARD_WIDTH - 1)     // right edge
+        return false;
+      locations[i].position += 1;
+      break;
 
-    case DIRECTION_DOWN:
-    if (location.position >= BOARD_WIDTH * (BOARD_HEIGHT - 1))  // bottom edge
-      return false;
-    location.position += BOARD_WIDTH;
-    break;
+      case DIRECTION_DOWN:
+      if (locations[i].position >= BOARD_WIDTH * (BOARD_HEIGHT - 1))  // bottom edge
+        return false;
+      locations[i].position += BOARD_WIDTH;
+      break;
 
-    default:
-    return false;
+      default:
+      return false;
+    }
   }
   return true;
 }
@@ -103,6 +109,14 @@ bool Game::isAccepting(location_t location)
   return false;
 }
 
+bool Game::isAccepting(std::vector<location_t> locations)
+{
+  bool allAccepting = true;
+  for (int i = 0; i < (int) locations.size(); i++)
+    allAccepting &= isAccepting(locations[i]);
+  return allAccepting;
+}
+
 void Game::updateDirection(location_t& location)
 {
   piece_t piece = board[location.position];
@@ -138,4 +152,16 @@ void Game::updateDirection(location_t& location)
   {
     // todo : requires earlier todo
   }
+}
+
+
+void Game::updateDirections(std::vector<location_t> &locations)
+{
+  for (int i = 0; i < (int) locations.size(); i++)
+    updateDirection(locations[i]);
+}
+
+bool Game::isFinished(std::vector<location_t> locations)
+{
+  return true;
 }

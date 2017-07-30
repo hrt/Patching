@@ -18,9 +18,12 @@ private:
   board_t board;
   int spoolIndex;
   std::vector<int> tieOffIndex;
-  bool advancePosition(location_t& location);
+  bool advancePositions(std::vector<location_t> &locations);
+  bool isAccepting(std::vector<location_t> locations);
   bool isAccepting(location_t location);
   void updateDirection(location_t& location);
+  void updateDirections(std::vector<location_t> &locations);
+  bool isFinished(std::vector<location_t> locations);
 };
 
 #endif
