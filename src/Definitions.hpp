@@ -50,7 +50,7 @@
 #define isTurn(x) (x >= TURN_LEFT_UP && x <= TURN_LEFT_DOWN)
 #define isTurnStraight(x) (x >= TURN_STRAIGHT_LEFT && x <= TURN_STRAIGHT_DOWN)
 #define isGrommet(x) (x >= GROMMET_LEFT && x <= GROMMET_DOWN)
-#define isMoveable(x) (x >= STRAIGHT)
+#define isMoveable(x) (x >= STRAIGHT_HORIZONTAL)
 
 
 // Representation of the board
