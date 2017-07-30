@@ -4,9 +4,9 @@ CFLAGS  = -std=gnu++0x -Wall -Werror -pedantic
 SRCDIR	= src
 OUTDIR	= bin
 
-OOBJ		= Parser.o
+OOBJ		= Parser.o Game.o
 
-_DEPS		= Definitions.hpp Parser.hpp
+_DEPS		= Definitions.hpp Parser.hpp Game.hpp
 DEPS    = $(patsubst %,$(SRCDIR)/%,$(_DEPS))
 
 _OBJ		= $(OOBJ) Main.o

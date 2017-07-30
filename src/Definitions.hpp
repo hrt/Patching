@@ -17,6 +17,17 @@
 #define STRAIGHT_TURN 5
 #define GROMMET 6
 
+// Generic piece functions
+#define isSpool(x) (x == SPOOL)
+#define isTieOff(x) (x == TIE_OFF)
+#define isBlocker(x) (x == BLOCKER)
+#define isStraight(x) (x == STRAIGHT)
+#define isTurn(x) (x == TURN)
+#define isStraightTurn(x) (x == STRAIGHT_TURN)
+#define isGrommet(x) (x == GROMMET)
+#define isMoveable(x) (x >= STRAIGHT)
+
+
 // Representation of the board
 typedef std::array<int, BOARD_WIDTH * BOARD_HEIGHT> board_t;
 
