@@ -81,29 +81,8 @@ bool Game::isAccepting(location_t location)
   }
   else if (isTurn(piece))
   {
-    // return piece - TURN_LEFT_UP == direction
-        // || (piece - TURN_LEFT_UP + 1) % 4 == direction;
-    // todo : neaten
     int pieceDirection = piece - TURN_LEFT_UP;
-    if (pieceDirection < 2) // accept down
-    {
-      if (direction == 3)
-        return true;
-      if (pieceDirection == 0)
-        return direction == 0;
-      if (pieceDirection == 1)
-        return direction == 2;
-    }
-    else // accept up
-    {
-      if (direction == 1)
-        return true;
-      if (pieceDirection == 2)
-        return direction == 2;
-      if (pieceDirection == 3)
-        return direction == 0;
-    }
-    return false;
+    return isAcceptingLookup[pieceDirection][direction];
   }
   else if (isTurnStraight(piece))
   {
