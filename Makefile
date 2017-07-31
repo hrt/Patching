@@ -1,6 +1,6 @@
 CC			= g++
 OBJDIR	= obj
-CFLAGS  = -std=gnu++0x -Wall -Werror -pedantic -pthread
+CFLAGS  = -std=gnu++0x -Wall -Werror -pedantic -pthread -Wno-error=int-to-pointer-cast
 SRCDIR	= src
 OUTDIR	= bin
 
