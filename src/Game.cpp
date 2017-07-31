@@ -1,4 +1,5 @@
 #include "Game.hpp"
+// #include <iostream>
 
 Game::Game(board_t board)
 {
@@ -29,6 +30,8 @@ bool Game::isValid()
     isValid &= advancePositions(locations);
     isValid &= isAccepting(locations);
     updateDirections(locations);
+    // for (int i = 0; i < (int) locations.size(); i++)
+    //   std::cout << i << " : " << locations[i].position << std::endl;
   }
 
   return isValid;
@@ -39,6 +42,10 @@ bool Game::advancePositions(std::vector<location_t> &locations)
 {
   for (int i = 0; i < (int) locations.size(); i++)
   {
+    // if we're terminal then return true
+    if (!(isMoveable(board[locations[i].position]) && !isGrommet(board[locations[i].position])) && !isSpool(board[locations[i].position]))
+      continue;
+
     switch (locations[i].direction)
     {
       case DIRECTION_LEFT:
@@ -97,7 +104,8 @@ bool Game::isAccepting(location_t location)
   }
   else if (isGrommet(piece))
   {
-    return piece - GROMMET_LEFT == direction;
+    int pieceDirection = piece - GROMMET_LEFT;
+    return isTieOffAccepting[pieceDirection][direction];
   }
   else if (isTieOff(piece))
   {
