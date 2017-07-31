@@ -12,14 +12,16 @@ public:
   board_t randomPermutation();
   int isValid();
 private:
-  bool isTurnAccepting[4][4] =   {{true, false, false, true},
-                                  {false, false, true, true},
-                                  {false, true, true, false},
-                                  {true, true, false, false}};
-  bool isTieOffAccepting[4][4] = {{true, false, false ,false},
-                                  {false, false, false, true},
-                                  {false, false, true, false},
-                                  {false, true, false, false}};
+  // give it the piece you're looking at and the direction you're at and it tells you if it is accepting/supported
+  bool isTurnAccepting[4][4] =    {{true, false, false, true},
+                                   {false, false, true, true},
+                                   {false, true, true, false},
+                                   {true, true, false, false}};
+  bool isAdvanceAccepting[4][4] = {{true, false, false ,false},
+                                   {false, false, false, true},
+                                   {false, false, true, false},
+                                   {false, true, false, false}};
+  // given the "turn + straight" piece you're looking at AND curent direction it returns (index 0 and 1) array of directions you split into
   int turnStraightToDirection[4][4][2] = {{{DIRECTION_UP, DIRECTION_DOWN}, {DIRECTION_UP, DIRECTION_RIGHT}, {0, 0}, {DIRECTION_DOWN, DIRECTION_RIGHT}},
                                           {{DIRECTION_LEFT, DIRECTION_DOWN}, {DIRECTION_LEFT, DIRECTION_RIGHT}, {DIRECTION_DOWN, DIRECTION_RIGHT}, {0, 0}},
                                           {{0, 0}, {DIRECTION_LEFT, DIRECTION_UP}, {DIRECTION_UP, DIRECTION_DOWN}, {DIRECTION_LEFT, DIRECTION_DOWN}},

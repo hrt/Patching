@@ -169,17 +169,17 @@ bool Game::isAccepting(location_t& location)
   else if (isGrommet(piece))
   {
     int pieceDirection = piece - GROMMET_LEFT;
-    return isTieOffAccepting[pieceDirection][direction];
+    return isAdvanceAccepting[pieceDirection][direction];
   }
   else if (isTieOff(piece))
   {
     int pieceDirection = piece - TIE_OFF_LEFT;
-    return isTieOffAccepting[pieceDirection][direction];
+    return isAdvanceAccepting[pieceDirection][direction];
   }
   else if (isSpool(piece))
   {
     int pieceDirection = piece - SPOOL_LEFT;
-    if (isTieOffAccepting[pieceDirection][(direction + 2) % 4]) // checking against opposite direction
+    if (isAdvanceAccepting[pieceDirection][(direction + 2) % 4]) // checking against opposite direction
     {
       // if we just hit a spool then turn inactive (caused by patch loop)
       if (isSpool(board[location.position]))
