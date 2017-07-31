@@ -2,7 +2,8 @@
 A basic solver which will calculate the best move (it thinks) using multi threaded random simulations to gather the longest path.
 Discussion thread https://bot-supply.com/forum/development/13919-patching-bot-logic-[c-].html
 
-### Building
+### Building (Windows / Linux)
+For windows, be sure to install ```make``` and ```g++``` using ```Cygwin``` https://www.cygwin.com/.
 To build this you will need to run ```make``` within the root directory
 
 ### How to use
@@ -21,6 +22,7 @@ Please note that the conversion from visual to textual can be quite confusing fo
 
 Here is an example of parsing an entire board:
 Visual representation
+
 ![banner](http://i.imgur.com/Jssxw37.jpg)
 
 Character representation
