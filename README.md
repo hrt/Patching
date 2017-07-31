@@ -40,6 +40,26 @@ Program input
 IIIIIIIIOYPONIIMPFZYIINYPMAIIYNONMIIIIIIII
 ```
 
+Example output
+```
+IIIIIIIIOYPONIIMPFZYIINYPMAIIYNONMIIIIIIII
+main() : creating thread, 0
+main() : creating thread, 1
+main() : creating thread, 2
+main() : creating thread, 3
+main() : creating thread, 4
+main() : creating thread, 5
+main() : creating thread, 6
+main() : creating thread, 7
+5
+IIIIIIIIPOPOOIIMOFZYIIZZMMAIIMPNMZIIIIIIII
+7
+IIIIIIIINPPYOIIYNFPNIINMMMAIIZZOPZIIIIIIII
+9
+IIIIIIIIMPOMZIIPNFMPIIMYYYAIIYOPMMIIIIIIII
+11
+IIIIIIIIOPOOMIIPNFMZIIZMPYAIIMYNYMIIIIIIII
+```
 Input to the program a series of 42 alphabetical characters to represent the board state.
 
 The program will continuously apply random moves to find better solutions on the go and output them in the same format as input.
