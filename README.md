@@ -1,5 +1,6 @@
 ### Puzzle solver for https://yppedia.puzzlepirates.com/Patching
 A basic solver which will calculate the best move (it thinks) using multi threaded random simulations to gather the longest path.
+Discussion thread https://bot-supply.com/forum/development/13919-patching-bot-logic-[c-].html
 
 ### Building
 To build this you will need to run ```make``` within the root directory
