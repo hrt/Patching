@@ -4,10 +4,13 @@
 #include "Game.hpp"
 #include <time.h>
 #include <pthread.h>
+#include <mutex>
 
 #define NUM_THREADS 8
 
 board_t board;
+int maxScore = -1;
+std::mutex mutex;
 
 void *randomForce(void *threadId)
 {
@@ -16,18 +19,19 @@ void *randomForce(void *threadId)
 
   Game game(board);
 
-  int maxScore = -1;
   while (true)
   {
     board_t board = game.randomPermutation();
     int score = game.isValid();
     if (score > maxScore)
     {
+      mutex.lock();
       maxScore = score;
       std::cout << score << std::endl;
       for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)
         std::cout << (char) (board[i] + 'A');
       std::cout << std::endl;
+      mutex.unlock();
     }
   }
 
