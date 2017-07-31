@@ -52,14 +52,12 @@ int main()
   printBoard(board);
 
   pthread_t threads[NUM_THREADS];
-  mutex.lock();
   for (int i = 0; i < NUM_THREADS; i++)
   {
     std::cout << "main() : creating thread, " << i << std::endl;
     if (pthread_create(&threads[i], NULL, randomForce, (void *) i))
       std::cout << "Error:unable to create thread" << std::endl;
   }
-  mutex.unlock();
   pthread_exit(NULL);
 
   return 0;
