@@ -9,7 +9,7 @@ board_t Parser::parseBoard()
   {
     std::cin >> c;
     piece_t p = c - 'A';
-    if (p < 0 || p > GROMMET_DOWN)
+    if (p < 0 || p > STRAIGHT_VERTICAL)
       std::cout << "Parsing error : invalid piece(" << c << ')' << std::endl;
     board[i] = p;
   }

@@ -6,7 +6,8 @@
 
 int main()
 {
-  srand (time(NULL));
+  srand(time(NULL));
+
   Parser parser;
   board_t board = parser.parseBoard();
 
@@ -20,7 +21,7 @@ int main()
   {
     std::cout << "Board is invalid" << std::endl << std::endl;
   }
-
+  board = game.generateRandomPermutation();
   for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)
     std::cout << (char) (board[i] + 'A');
   std::cout << std::endl;

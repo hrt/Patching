@@ -9,7 +9,7 @@ class Game
 {
 public:
   Game(board_t board);
-  board_t generateRandomBoard();
+  board_t generateRandomPermutation();
   bool isValid();
 private:
   bool isTurnAccepting[4][4] =   {{true, false, false, true},

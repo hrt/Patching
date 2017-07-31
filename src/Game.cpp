@@ -1,5 +1,4 @@
 #include "Game.hpp"
-#include <iostream>
 
 Game::Game(board_t board)
 {
@@ -17,7 +16,7 @@ Game::Game(board_t board)
 }
 
 // returns a random permutation of inital board
-board_t Game::generateRandomBoard()
+board_t Game::generateRandomPermutation()
 {
   board_t board(this->board); // copy old board
   int boardSize = (int) board.size();
@@ -87,9 +86,6 @@ bool Game::isValid()
     isValid &= advancePositions(locations);
     isValid &= isAccepting(locations);
     updateDirections(locations);
-    for (int i = 0; i < (int) locations.size(); i++)
-      if (locations[i].isActive)
-        std::cout << i << " : " << locations[i].position << std::endl;
   }
 
   return isValid;
