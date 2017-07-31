@@ -3,20 +3,23 @@
 #include "Parser.hpp"
 #include "Game.hpp"
 #include <time.h>
+#include <pthread.h>
 
-int main()
+#define NUM_THREADS 8
+
+board_t board;
+
+void *randomForce(void *threadId)
 {
-  srand(time(NULL));
-
-  Parser parser;
-  board_t board = parser.parseBoard();
+  long seed = (long) threadId;
+  srand(seed + time(NULL));
 
   Game game(board);
 
   int maxScore = -1;
   while (true)
   {
-    board = game.randomPermutation();
+    board_t board = game.randomPermutation();
     int score = game.isValid();
     if (score > maxScore)
     {
@@ -27,6 +30,26 @@ int main()
       std::cout << std::endl;
     }
   }
+
+  pthread_exit(NULL);
+}
+
+int main()
+{
+  Parser parser;
+
+  board = parser.parseBoard();
+
+  std::cout << ((char) (board[0] + 'A')) << std::endl;
+
+  pthread_t threads[NUM_THREADS];
+  for (int i = 0; i < NUM_THREADS; i++)
+  {
+    std::cout << "main() : creating thread, " << i << std::endl;
+    if (pthread_create(&threads[i], NULL, randomForce, (void *) i))
+      std::cout << "Error:unable to create thread" << std::endl;
+  }
+  pthread_exit(NULL);
 
   return 0;
 }

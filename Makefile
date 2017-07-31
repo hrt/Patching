@@ -1,6 +1,6 @@
 CC			= g++
 OBJDIR	= obj
-CFLAGS  = -std=gnu++0x -Wall -Werror -pedantic
+CFLAGS  = -std=gnu++0x -Wall -Werror -pedantic -pthread
 SRCDIR	= src
 OUTDIR	= bin
 

@@ -81,10 +81,9 @@ int Game::isValid()
 
   while (isValid && !isFinished(locations))
   {
-    // no idea what this is scoring atm
-    score += 1;
-
     isValid &= advancePositions(locations);
+    score += (int) locations.size();
+
     isValid &= isAccepting(locations);
     updateDirections(locations);
   }
