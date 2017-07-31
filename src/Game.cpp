@@ -78,7 +78,6 @@ int Game::isValid()
   bool isValid = true;
   int score = 0;
 
-// todo : loop patches will iterate infinitly
   while (isValid && !isFinished(locations))
   {
     // no idea what this is scoring atm
@@ -143,7 +142,7 @@ bool Game::advancePositions(std::vector<location_t> &locations)
 bool Game::isAccepting(location_t& location)
 {
   piece_t piece = board[location.position];
-  // todo
+  // todo : not sure why this doesn't work yet.., fix it!
   // if (isMoveable(piece) && !isGrommet(piece) && seenPositions[location.position]) // we have already seen this!
     // location.isActive = false;
 
@@ -222,6 +221,7 @@ void Game::updateDirections(std::vector<location_t> &locations)
 
     if (isTurn(piece))
     {
+      // todo : a lot of branching, get rid of it with static array
       if (previousDirection % 2 == 0)  // left or right
       {
         if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
