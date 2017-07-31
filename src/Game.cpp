@@ -122,7 +122,8 @@ bool Game::isAccepting(std::vector<location_t> locations)
 
 void Game::updateDirections(std::vector<location_t> &locations)
 {
-  for (int i = 0; i < (int) locations.size(); i++)
+  int initialSize = (int) locations.size();
+  for (int i = 0; i < initialSize; i++)
   {
     piece_t piece = board[locations[i].position];
     int previousDirection = locations[i].direction;
@@ -154,7 +155,18 @@ void Game::updateDirections(std::vector<location_t> &locations)
     }
     else if (isTurnStraight(piece))
     {
-      // todo : pushback a new location and update current!
+      // split into two directions..
+      int pieceDirection = piece - TURN_STRAIGHT_LEFT;
+      int direction1 =  turnStraightToDirection[pieceDirection][previousDirection][0];
+      int direction2 =  turnStraightToDirection[pieceDirection][previousDirection][1];
+
+      location_t location;
+      location.position = locations[i].position;
+      location.direction = direction2;
+
+      locations[i].direction = direction1;
+
+      locations.push_back(location);
     }
   }
 }

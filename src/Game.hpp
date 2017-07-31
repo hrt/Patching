@@ -19,6 +19,9 @@ private:
                                   {false, false, false, true},
                                   {false, false, true, false},
                                   {false, true, false, false}};
+  int turnStraightToDirection[4][4][2] = {{{DIRECTION_UP, DIRECTION_DOWN}, {DIRECTION_UP, DIRECTION_RIGHT}, {0, 0}, {DIRECTION_DOWN, DIRECTION_RIGHT}},
+                                          {{DIRECTION_DOWN, DIRECTION_RIGHT}, {DIRECTION_LEFT, DIRECTION_RIGHT}, {DIRECTION_DOWN, DIRECTION_RIGHT}, {0, 0}},
+                                          {{0, 0}, {DIRECTION_LEFT, DIRECTION_UP}, {DIRECTION_UP, DIRECTION_DOWN}, {DIRECTION_LEFT, DIRECTION_DOWN}}};
   board_t board;
   int spoolIndex;
   std::vector<int> tieOffIndex;
