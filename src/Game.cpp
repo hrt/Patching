@@ -1,5 +1,5 @@
 #include "Game.hpp"
-// #include <iostream>
+#include <iostream>
 
 Game::Game(board_t board)
 {
@@ -15,23 +15,30 @@ Game::Game(board_t board)
 
 bool Game::isValid()
 {
+  for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)  // set all starts positions to false
+    startPositions[i] = false;
+
   location_t location;
+  location.isActive = true;
   location.position = spoolIndex;
   location.direction = board[spoolIndex];   // direction left === spool left..
+
+  startPositions[spoolIndex] = true; // marking start position
 
   std::vector<location_t> locations;
   locations.push_back(location);
 
   bool isValid = true;
 
-// todo : doesn't take into account patching loops
+// todo : loop patches will iterate infinitly
   while (isValid && !isFinished(locations))
   {
     isValid &= advancePositions(locations);
     isValid &= isAccepting(locations);
     updateDirections(locations);
-    // for (int i = 0; i < (int) locations.size(); i++)
-    //   std::cout << i << " : " << locations[i].position << std::endl;
+    for (int i = 0; i < (int) locations.size(); i++)
+      if (locations[i].isActive)
+        std::cout << i << " : " << locations[i].position << std::endl;
   }
 
   return isValid;
@@ -42,8 +49,11 @@ bool Game::advancePositions(std::vector<location_t> &locations)
 {
   for (int i = 0; i < (int) locations.size(); i++)
   {
-    // if we're terminal then return true
+    // if we're terminal (spool is not terminal) then return true
     if (!(isMoveable(board[locations[i].position]) && !isGrommet(board[locations[i].position])) && !isSpool(board[locations[i].position]))
+      continue;
+
+    if (!locations[i].isActive)
       continue;
 
     switch (locations[i].direction)
@@ -80,8 +90,11 @@ bool Game::advancePositions(std::vector<location_t> &locations)
 }
 
 // check if piece is accepting direction
-bool Game::isAccepting(location_t location)
+bool Game::isAccepting(location_t& location)
 {
+  if (!location.isActive)
+    return true;
+
   piece_t piece = board[location.position];
   int direction = location.direction;
 
@@ -114,12 +127,24 @@ bool Game::isAccepting(location_t location)
   }
   else if (isSpool(piece))
   {
-    return piece - SPOOL_LEFT == direction;
+    int pieceDirection = piece - SPOOL_LEFT;
+    if (isTieOffAccepting[pieceDirection][(direction + 2) % 4])
+    {
+      // if we just hit a spool then turn inactive (caused by patch loop)
+      if (isSpool(board[location.position]))
+        location.isActive = false;
+      return true;
+    }
+    else
+    {
+      // we just left the spool
+      return isTieOffAccepting[pieceDirection][direction];
+    }
   }
   return false;
 }
 
-bool Game::isAccepting(std::vector<location_t> locations)
+bool Game::isAccepting(std::vector<location_t> &locations)
 {
   bool allAccepting = true;
   for (int i = 0; i < (int) locations.size(); i++)
@@ -135,6 +160,9 @@ void Game::updateDirections(std::vector<location_t> &locations)
   {
     piece_t piece = board[locations[i].position];
     int previousDirection = locations[i].direction;
+
+    if (!locations[i].isActive)
+      continue;
 
     if (isTurn(piece))
     {
@@ -163,18 +191,32 @@ void Game::updateDirections(std::vector<location_t> &locations)
     }
     else if (isTurnStraight(piece))
     {
-      // split into two directions..
-      int pieceDirection = piece - TURN_STRAIGHT_LEFT;
-      int direction1 =  turnStraightToDirection[pieceDirection][previousDirection][0];
-      int direction2 =  turnStraightToDirection[pieceDirection][previousDirection][1];
+      // determine if it is a reoccuring loop
+      if (startPositions[i])
+      {
+        // loop -> remove the current location from locations
+        locations[i].isActive = false;
+      }
+      else
+      {
+        // split
+        startPositions[i] = true; // marking start position
 
-      location_t location;
-      location.position = locations[i].position;
-      location.direction = direction2;
+        int pieceDirection = piece - TURN_STRAIGHT_LEFT;
+        int direction1 =  turnStraightToDirection[pieceDirection][previousDirection][0];
+        int direction2 =  turnStraightToDirection[pieceDirection][previousDirection][1];
 
-      locations[i].direction = direction1;
+        location_t location;
+        location.position = locations[i].position;
+        location.direction = direction2;
 
-      locations.push_back(location);
+        location.isActive = true;
+
+        locations.push_back(location);
+
+        locations[i].direction = direction1;
+
+      }
     }
   }
 }
@@ -185,9 +227,11 @@ bool Game::isFinished(std::vector<location_t> locations)
   std::vector<int> foundTieOffs;
 
   // check that all endings are actually endings
-  // todo : this will fail in case of loops
   for (int i = 0; i < (int) locations.size(); i++)
   {
+    if (!locations[i].isActive)
+      continue;
+
     piece_t piece = board[locations[i].position];
     if (isTieOff(piece))
     {
@@ -206,12 +250,17 @@ bool Game::isFinished(std::vector<location_t> locations)
 
   for (int i = 0; i < (int) tieOffIndex.size(); i++)
   {
+    bool foundMatch = false;
     for (int j = 0; j < (int) foundTieOffs.size(); i++)
     {
       if (foundTieOffs[j] == tieOffIndex[i])
+      {
+        foundMatch = true;
         break;
-      return false;
+      }
     }
+    if (!foundMatch)
+      return false;
   }
 
   return true;
