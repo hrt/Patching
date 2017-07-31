@@ -1,5 +1,5 @@
 ### Puzzle solver for https://yppedia.puzzlepirates.com/Patching
-A basic solver which will calculate the best move (it thinks) using random simulations to gather the longest path.
+A basic solver which will calculate the best move (it thinks) using multi threaded random simulations to gather the longest path.
 
 ### Building
 To build this you will need to run ```make``` within the root directory
