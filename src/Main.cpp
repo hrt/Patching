@@ -9,8 +9,15 @@
 #define NUM_THREADS 8
 
 board_t board;
-int maxScore = -1;
+int maxScore = 0;
 std::mutex mutex;
+
+void printBoard(board_t board)
+{
+  for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)
+    std::cout << (char) (board[i] + 'A');
+  std::cout << std::endl;
+}
 
 void *randomForce(void *threadId)
 {
@@ -28,9 +35,7 @@ void *randomForce(void *threadId)
       mutex.lock();
       maxScore = score;
       std::cout << score << std::endl;
-      for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)
-        std::cout << (char) (board[i] + 'A');
-      std::cout << std::endl;
+      printBoard(board);
       mutex.unlock();
     }
   }
@@ -44,15 +49,17 @@ int main()
 
   board = parser.parseBoard();
 
-  std::cout << ((char) (board[0] + 'A')) << std::endl;
+  printBoard(board);
 
   pthread_t threads[NUM_THREADS];
+  mutex.lock();
   for (int i = 0; i < NUM_THREADS; i++)
   {
     std::cout << "main() : creating thread, " << i << std::endl;
     if (pthread_create(&threads[i], NULL, randomForce, (void *) i))
       std::cout << "Error:unable to create thread" << std::endl;
   }
+  mutex.unlock();
   pthread_exit(NULL);
 
   return 0;
