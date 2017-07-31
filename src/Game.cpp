@@ -16,9 +16,8 @@ Game::Game(board_t board)
 }
 
 // returns a random permutation of inital board
-board_t Game::generateRandomPermutation()
+board_t Game::randomPermutation()
 {
-  board_t board(this->board); // copy old board
   int boardSize = (int) board.size();
 
   int immovableLeft = immovableCount;
@@ -33,8 +32,7 @@ board_t Game::generateRandomPermutation()
     }
 
     int piecesLeft = boardSize - i;
-
-    if (piecesLeft - 1 <= immovableLeft) // there are moveables left
+    if (piecesLeft - 1 > immovableLeft) // there are moveables left
     {
       // find a random index that has not been "placed" yet
       int randomIndex = rand() % (piecesLeft);
@@ -59,11 +57,10 @@ board_t Game::generateRandomPermutation()
     }
     board[i] = basePiece + randomRotation;
   }
-
   return board;
 }
 
-bool Game::isValid()
+int Game::isValid()
 {
   for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)  // set all starts positions to false
     seenPositions[i] = false;
@@ -79,16 +76,22 @@ bool Game::isValid()
   locations.push_back(location);
 
   bool isValid = true;
+  int score = 0;
 
 // todo : loop patches will iterate infinitly
   while (isValid && !isFinished(locations))
   {
+    // no idea what this is scoring atm
+    score += 1;
+
     isValid &= advancePositions(locations);
     isValid &= isAccepting(locations);
     updateDirections(locations);
+    // for (int i = 0; i < (int) locations.size(); i++)
+    //   if (locations[i].isActive)
+    //     std::cout << i << " : " << locations[i].position << std::endl;
   }
-
-  return isValid;
+  return isValid ? score : 0;
 }
 
 // move ahead one
@@ -140,9 +143,9 @@ bool Game::advancePositions(std::vector<location_t> &locations)
 bool Game::isAccepting(location_t& location)
 {
   piece_t piece = board[location.position];
-
-  if (isMoveable(piece) && !isGrommet(piece) && seenPositions[location.position]) // we have already seen this!
-    location.isActive = false;
+  // todo
+  // if (isMoveable(piece) && !isGrommet(piece) && seenPositions[location.position]) // we have already seen this!
+    // location.isActive = false;
 
   if (!location.isActive)
     return true;

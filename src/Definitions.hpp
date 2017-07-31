@@ -16,7 +16,7 @@
 
 
 // Pieces in the game
-#define SPOOL_LEFT 0              // 0-        // A
+#define SPOOL_LEFT 0              // --0-      // A
 #define SPOOL_UP 1                             // B
 #define SPOOL_RIGHT 2                          // C
 #define SPOOL_DOWN 3                           // D
