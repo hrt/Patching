@@ -16,14 +16,14 @@ Game::Game(board_t board)
 bool Game::isValid()
 {
   for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)  // set all starts positions to false
-    startPositions[i] = false;
+    seenPositions[i] = false;
 
   location_t location;
   location.isActive = true;
   location.position = spoolIndex;
   location.direction = board[spoolIndex];   // direction left === spool left..
 
-  startPositions[spoolIndex] = true; // marking start position
+  seenPositions[spoolIndex] = true; // marking start position
 
   std::vector<location_t> locations;
   locations.push_back(location);
@@ -92,10 +92,14 @@ bool Game::advancePositions(std::vector<location_t> &locations)
 // check if piece is accepting direction
 bool Game::isAccepting(location_t& location)
 {
+  piece_t piece = board[location.position];
+
+  if (isMoveable(piece) && !isGrommet(piece) && seenPositions[location.position]) // we have already seen this!
+    location.isActive = false;
+
   if (!location.isActive)
     return true;
 
-  piece_t piece = board[location.position];
   int direction = location.direction;
 
   if (isBlocker(piece))
@@ -148,7 +152,9 @@ bool Game::isAccepting(std::vector<location_t> &locations)
 {
   bool allAccepting = true;
   for (int i = 0; i < (int) locations.size(); i++)
+  {
     allAccepting &= isAccepting(locations[i]);
+  }
   return allAccepting;
 }
 
@@ -192,7 +198,7 @@ void Game::updateDirections(std::vector<location_t> &locations)
     else if (isTurnStraight(piece))
     {
       // determine if it is a reoccuring loop
-      if (startPositions[i])
+      if (seenPositions[i])
       {
         // loop -> remove the current location from locations
         locations[i].isActive = false;
@@ -200,7 +206,7 @@ void Game::updateDirections(std::vector<location_t> &locations)
       else
       {
         // split
-        startPositions[i] = true; // marking start position
+        seenPositions[i] = true; // marking start position
 
         int pieceDirection = piece - TURN_STRAIGHT_LEFT;
         int direction1 =  turnStraightToDirection[pieceDirection][previousDirection][0];
@@ -218,6 +224,7 @@ void Game::updateDirections(std::vector<location_t> &locations)
 
       }
     }
+    seenPositions[locations[i].position] |= true;
   }
 }
 

@@ -20,11 +20,11 @@ private:
                                   {false, false, true, false},
                                   {false, true, false, false}};
   int turnStraightToDirection[4][4][2] = {{{DIRECTION_UP, DIRECTION_DOWN}, {DIRECTION_UP, DIRECTION_RIGHT}, {0, 0}, {DIRECTION_DOWN, DIRECTION_RIGHT}},
-                                          {{DIRECTION_DOWN, DIRECTION_RIGHT}, {DIRECTION_LEFT, DIRECTION_RIGHT}, {DIRECTION_DOWN, DIRECTION_RIGHT}, {0, 0}},
+                                          {{DIRECTION_LEFT, DIRECTION_DOWN}, {DIRECTION_LEFT, DIRECTION_RIGHT}, {DIRECTION_DOWN, DIRECTION_RIGHT}, {0, 0}},
                                           {{0, 0}, {DIRECTION_LEFT, DIRECTION_UP}, {DIRECTION_UP, DIRECTION_DOWN}, {DIRECTION_LEFT, DIRECTION_DOWN}},
                                           {{DIRECTION_LEFT, DIRECTION_UP}, {0, 0}, {DIRECTION_UP, DIRECTION_RIGHT}, {DIRECTION_LEFT, DIRECTION_RIGHT}}};
   board_t board;
-  std::array<bool, BOARD_WIDTH * BOARD_HEIGHT> startPositions;
+  std::array<bool, BOARD_WIDTH * BOARD_HEIGHT> seenPositions;
   int spoolIndex;
   std::vector<int> tieOffIndex;
   bool advancePositions(std::vector<location_t> &locations);
