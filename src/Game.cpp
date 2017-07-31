@@ -1,4 +1,5 @@
 #include "Game.hpp"
+
 Game::Game(board_t board)
 {
   this->board = board;
@@ -22,6 +23,7 @@ bool Game::isValid()
 
   bool isValid = true;
 
+// todo : doesn't take into account patching loops
   while (isValid && !isFinished(locations))
   {
     isValid &= advancePositions(locations);
@@ -87,7 +89,7 @@ bool Game::isAccepting(location_t location)
   else if (isTurn(piece))
   {
     int pieceDirection = piece - TURN_LEFT_UP;
-    return isAcceptingLookup[pieceDirection][direction];
+    return isTurnAccepting[pieceDirection][direction];
   }
   else if (isTurnStraight(piece))
   {
@@ -99,7 +101,8 @@ bool Game::isAccepting(location_t location)
   }
   else if (isTieOff(piece))
   {
-    return piece - TIE_OFF_LEFT == direction;
+    int pieceDirection = piece - TIE_OFF_LEFT;
+    return isTieOffAccepting[pieceDirection][direction];
   }
   else if (isSpool(piece))
   {
@@ -124,7 +127,6 @@ void Game::updateDirections(std::vector<location_t> &locations)
     piece_t piece = board[locations[i].position];
     int previousDirection = locations[i].direction;
 
-    // todo: should be location array instead of one
     if (isTurn(piece))
     {
       if (previousDirection % 2 == 0)  // left or right
@@ -159,6 +161,38 @@ void Game::updateDirections(std::vector<location_t> &locations)
 
 bool Game::isFinished(std::vector<location_t> locations)
 {
-  // todo : multiple tie offs, a.k.a check that all tieoffs are met and location.position s are tie offs or grommet
+  // keep track of tie offs found
+  std::vector<int> foundTieOffs;
+
+  // check that all endings are actually endings
+  // todo : this will fail in case of loops
+  for (int i = 0; i < (int) locations.size(); i++)
+  {
+    piece_t piece = board[locations[i].position];
+    if (isTieOff(piece))
+    {
+      foundTieOffs.push_back(locations[i].position);
+      continue;
+    }
+
+    if (!(isGrommet(piece)))
+      return false;
+  }
+
+  // check that all tie offs are met
+
+  if (tieOffIndex.size() > foundTieOffs.size())
+    return false;
+
+  for (int i = 0; i < (int) tieOffIndex.size(); i++)
+  {
+    for (int j = 0; j < (int) foundTieOffs.size(); i++)
+    {
+      if (foundTieOffs[j] == tieOffIndex[i])
+        break;
+      return false;
+    }
+  }
+
   return true;
 }
