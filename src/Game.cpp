@@ -15,7 +15,7 @@ Game::Game(board_t board)
   }
 }
 
-// returns a random permutation of inital board
+// updates and returns a random permutation of inital board
 board_t Game::randomPermutation()
 {
   int boardSize = (int) board.size();
@@ -60,6 +60,7 @@ board_t Game::randomPermutation()
   return board;
 }
 
+// checks if current permutation of board is valid and if yes returns score
 int Game::isValid()
 {
   for (int i = 0; i < BOARD_WIDTH * BOARD_HEIGHT; i++)  // set all starts positions to false
@@ -86,19 +87,16 @@ int Game::isValid()
     isValid &= advancePositions(locations);
     isValid &= isAccepting(locations);
     updateDirections(locations);
-    // for (int i = 0; i < (int) locations.size(); i++)
-    //   if (locations[i].isActive)
-    //     std::cout << i << " : " << locations[i].position << std::endl;
   }
   return isValid ? score : 0;
 }
 
-// move ahead one
+// advance all unfinished positions by one
 bool Game::advancePositions(std::vector<location_t> &locations)
 {
   for (int i = 0; i < (int) locations.size(); i++)
   {
-    // if we're terminal (spool is not terminal) then return true
+    // if we're terminal (spool is not terminal) then don't advance
     if (!(isMoveable(board[locations[i].position]) && !isGrommet(board[locations[i].position])) && !isSpool(board[locations[i].position]))
       continue;
 
@@ -138,7 +136,7 @@ bool Game::advancePositions(std::vector<location_t> &locations)
   return true;
 }
 
-// check if piece is accepting direction
+// check if currrent piece accepts current direction
 bool Game::isAccepting(location_t& location)
 {
   piece_t piece = board[location.position];
@@ -181,7 +179,7 @@ bool Game::isAccepting(location_t& location)
   else if (isSpool(piece))
   {
     int pieceDirection = piece - SPOOL_LEFT;
-    if (isTieOffAccepting[pieceDirection][(direction + 2) % 4])
+    if (isTieOffAccepting[pieceDirection][(direction + 2) % 4]) // checking against opposite direction
     {
       // if we just hit a spool then turn inactive (caused by patch loop)
       if (isSpool(board[location.position]))
@@ -278,6 +276,7 @@ void Game::updateDirections(std::vector<location_t> &locations)
   }
 }
 
+// checks if the game is fully finished
 bool Game::isFinished(std::vector<location_t> locations)
 {
   // keep track of tie offs found

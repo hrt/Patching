@@ -3,7 +3,7 @@
 
 struct location_t
 {
-  bool isActive;      // whether or not it's ongoing
+  bool isActive;      // whether or not we should continue looking ahead
   int position;
   int direction;
 };
