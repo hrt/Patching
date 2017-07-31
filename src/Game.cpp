@@ -189,7 +189,7 @@ bool Game::isAccepting(location_t& location)
     else
     {
       // we just left the spool
-      return isTieOffAccepting[pieceDirection][direction];
+      return isAdvanceAccepting[pieceDirection][direction];
     }
   }
   return false;
@@ -219,29 +219,8 @@ void Game::updateDirections(std::vector<location_t> &locations)
 
     if (isTurn(piece))
     {
-      // todo : a lot of branching, get rid of it with static array
-      if (previousDirection % 2 == 0)  // left or right
-      {
-        if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
-        {
-          locations[i].direction = (previousDirection + 1) % 4;
-        }
-        else // left down or right up
-        {
-          locations[i].direction = ((previousDirection - 1) + 4) % 4;
-        }
-      }
-      else  // up or down
-      {
-        if ((piece - TURN_LEFT_UP) % 2 == 0) // left up or right down
-        {
-          locations[i].direction = ((previousDirection - 1) + 4) % 4;
-        }
-        else // left down or right up
-        {
-          locations[i].direction = (previousDirection + 1) % 4;
-        }
-      }
+      int pieceDirection = piece - TURN_LEFT_UP;
+      locations[i].direction = turnToDirection[pieceDirection][previousDirection];
     }
     else if (isTurnStraight(piece))
     {

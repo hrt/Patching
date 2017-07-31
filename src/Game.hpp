@@ -21,6 +21,11 @@ private:
                                    {false, false, false, true},
                                    {false, false, true, false},
                                    {false, true, false, false}};
+  // given the "turn" piece you're looking at AND current direction it returns the direction you will end up at
+  int turnToDirection[4][4]     = {{DIRECTION_UP, 0, 0, DIRECTION_RIGHT},
+                                   {0, 0, DIRECTION_UP, DIRECTION_LEFT},
+                                   {0, DIRECTION_LEFT, DIRECTION_DOWN, 0},
+                                   {DIRECTION_DOWN, DIRECTION_RIGHT, 0, 0}};
   // given the "turn + straight" piece you're looking at AND curent direction it returns (index 0 and 1) array of directions you split into
   int turnStraightToDirection[4][4][2] = {{{DIRECTION_UP, DIRECTION_DOWN}, {DIRECTION_UP, DIRECTION_RIGHT}, {0, 0}, {DIRECTION_DOWN, DIRECTION_RIGHT}},
                                           {{DIRECTION_LEFT, DIRECTION_DOWN}, {DIRECTION_LEFT, DIRECTION_RIGHT}, {DIRECTION_DOWN, DIRECTION_RIGHT}, {0, 0}},
