@@ -9,6 +9,7 @@ class Game
 {
 public:
   Game(board_t board);
+  board_t generateRandomBoard();
   bool isValid();
 private:
   bool isTurnAccepting[4][4] =   {{true, false, false, true},
@@ -27,6 +28,7 @@ private:
   std::array<bool, BOARD_WIDTH * BOARD_HEIGHT> seenPositions;
   int spoolIndex;
   std::vector<int> tieOffIndex;
+  int immovableCount;
   bool advancePositions(std::vector<location_t> &locations);
   bool isAccepting(std::vector<location_t> &locations);
   bool isAccepting(location_t &location);

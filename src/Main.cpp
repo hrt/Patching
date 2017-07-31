@@ -2,9 +2,11 @@
 #include "Definitions.hpp"
 #include "Parser.hpp"
 #include "Game.hpp"
+#include <time.h>
 
 int main()
 {
+  srand (time(NULL));
   Parser parser;
   board_t board = parser.parseBoard();
 

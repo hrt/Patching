@@ -4,13 +4,64 @@
 Game::Game(board_t board)
 {
   this->board = board;
+  this->immovableCount = 0;
   for (int i = 0; i < (int) board.size(); i++)
   {
     if (isSpool(board[i]))
       this->spoolIndex = i;
     if (isTieOff(board[i]))
       this->tieOffIndex.push_back(i);
+    if (!isMoveable(board[i]))
+      immovableCount += 1;
   }
+}
+
+// returns a random permutation of inital board
+board_t Game::generateRandomBoard()
+{
+  board_t board(this->board); // copy old board
+  int boardSize = (int) board.size();
+
+  int immovableLeft = immovableCount;
+
+  for (int i = 0; i < boardSize; i++)
+  {
+    piece_t piece = board[i];
+    if (!(isMoveable(piece))) // skip immovable pieces
+    {
+      immovableLeft -= 1;
+      continue;
+    }
+
+    int piecesLeft = boardSize - i;
+
+    if (piecesLeft - 1 <= immovableLeft) // there are moveables left
+    {
+      // find a random index that has not been "placed" yet
+      int randomIndex = rand() % (piecesLeft);
+      while (!(isMoveable(board[randomIndex])))
+        randomIndex = rand() % (piecesLeft);
+
+      // swap them
+      board[i] = board[randomIndex];
+      board[randomIndex] = piece;
+    }
+
+    // now randomise rotation
+    int basePiece = (board[i] / 4) * 4;
+    int randomRotation = 0;
+    if (isStraight(board[i]))
+    { // there are only two rotations for straight pieces
+      randomRotation = rand() % 2;
+    }
+    else
+    {
+      randomRotation = rand() % 4;
+    }
+    board[i] = basePiece + randomRotation;
+  }
+
+  return board;
 }
 
 bool Game::isValid()

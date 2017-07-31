@@ -28,23 +28,23 @@
 
 #define BLOCKER 8                              // I
 
-#define STRAIGHT_HORIZONTAL 12    // _         // M
-#define STRAIGHT_VERTICAL 13                   // N
+#define TURN_LEFT_UP 12           // |_        // M
+#define TURN_RIGHT_UP 13                       // N
+#define TURN_RIGHT_DOWN 14                     // O
+#define TURN_LEFT_DOWN 15                      // P
 
-#define TURN_LEFT_UP 14           // |_        // O
-#define TURN_RIGHT_UP 15                       // P
-#define TURN_RIGHT_DOWN 16                     // Q
-#define TURN_LEFT_DOWN 17                      // R
+#define TURN_STRAIGHT_LEFT 16     // |-        // Q
+#define TURN_STRAIGHT_UP 17                    // R
+#define TURN_STRAIGHT_RIGHT 18                 // S
+#define TURN_STRAIGHT_DOWN 19                  // T
 
-#define TURN_STRAIGHT_LEFT 18     // |-        // S
-#define TURN_STRAIGHT_UP 19                    // T
-#define TURN_STRAIGHT_RIGHT 20                 // U
-#define TURN_STRAIGHT_DOWN 21                  // V
+#define GROMMET_LEFT 20           // o-        // U
+#define GROMMET_UP 21                          // V
+#define GROMMET_RIGHT 22                       // W
+#define GROMMET_DOWN 23                        // X
 
-#define GROMMET_LEFT 22           // o-        // W
-#define GROMMET_UP 23                          // X
-#define GROMMET_RIGHT 24                       // Y
-#define GROMMET_DOWN 25                        // Z
+#define STRAIGHT_HORIZONTAL 24    // _         // Y
+#define STRAIGHT_VERTICAL 25                   // Z
 
 // Generic piece functions
 #define isSpool(x) (x >= SPOOL_LEFT && x <= SPOOL_DOWN)
@@ -54,7 +54,7 @@
 #define isTurn(x) (x >= TURN_LEFT_UP && x <= TURN_LEFT_DOWN)
 #define isTurnStraight(x) (x >= TURN_STRAIGHT_LEFT && x <= TURN_STRAIGHT_DOWN)
 #define isGrommet(x) (x >= GROMMET_LEFT && x <= GROMMET_DOWN)
-#define isMoveable(x) (x >= STRAIGHT_HORIZONTAL)
+#define isMoveable(x) (x >= TURN_LEFT_UP)
 
 
 // Representation of the board
