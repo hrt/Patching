@@ -6,7 +6,7 @@
 #include <pthread.h>
 #include <mutex>
 
-#define NUM_THREADS 8
+#define NUM_THREADS 1               // for some reason, same performance at different threads
 
 board_t board;
 int maxScore = 0;
@@ -25,10 +25,15 @@ void *randomForce(void *threadId)
   srand(seed + time(NULL));
 
   Game game(board);
-
+  int count = 0;
   while (true)
   {
     board_t board = game.randomPermutation();
+    if (count % 100000 == 0)
+    {
+      printBoard(board);
+    }
+
     int score = game.isValid();
     if (score > maxScore)
     {
@@ -38,6 +43,7 @@ void *randomForce(void *threadId)
       printBoard(board);
       mutex.unlock();
     }
+    count++;
   }
 
   pthread_exit(NULL);

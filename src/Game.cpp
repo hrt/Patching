@@ -140,8 +140,8 @@ bool Game::isAccepting(location_t& location)
 {
   piece_t piece = board[location.position];
   // todo : not sure why this doesn't work yet.., fix it!
-  // if (isMoveable(piece) && !isGrommet(piece) && seenPositions[location.position]) // we have already seen this!
-    // location.isActive = false;
+  if (isMoveable(piece) && !isGrommet(piece) && seenPositions[location.position]) // we have already seen this!
+    location.isActive = false;
 
   if (!location.isActive)
     return true;
@@ -181,8 +181,7 @@ bool Game::isAccepting(location_t& location)
     if (isAdvanceAccepting[pieceDirection][(direction + 2) % 4]) // checking against opposite direction
     {
       // if we just hit a spool then turn inactive (caused by patch loop)
-      if (isSpool(board[location.position]))
-        location.isActive = false;
+      location.isActive = false;
       return true;
     }
     else
@@ -224,16 +223,13 @@ void Game::updateDirections(std::vector<location_t> &locations)
     else if (isTurnStraight(piece))
     {
       // determine if it is a reoccuring loop
-      if (seenPositions[i])
+      if (seenPositions[locations[i].position])
       {
         // loop -> remove the current location from locations
         locations[i].isActive = false;
       }
       else
       {
-        // split
-        seenPositions[i] = true; // marking start position
-
         int pieceDirection = piece - TURN_STRAIGHT_LEFT;
         int direction1 =  turnStraightToDirection[pieceDirection][previousDirection][0];
         int direction2 =  turnStraightToDirection[pieceDirection][previousDirection][1];
@@ -250,7 +246,6 @@ void Game::updateDirections(std::vector<location_t> &locations)
 
       }
     }
-    seenPositions[locations[i].position] |= true;
   }
 }
 
